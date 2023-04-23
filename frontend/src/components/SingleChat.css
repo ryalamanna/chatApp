@@ -1,0 +1,37 @@
+.single-chat-main-container-right{
+    max-width:100%;
+    min-width: 100%;
+    min-height:5%;
+    display: flex;
+    justify-content: right;
+    word-wrap: break-word;
+}
+
+.single-chat-main-container-left{
+    max-width:100%;
+    min-width: 100%;
+    min-height:5%;
+    display: flex;
+    justify-content: left;
+    word-wrap: break-word;
+}
+
+.single-chat-right{
+    margin: 10px;
+    padding: 15px;
+    max-width:80%;
+    min-width:20%;
+    background-color: #ffff;
+    border-radius: 10px 0 10px 10px;
+    right: 0;
+}
+
+.single-chat-left{
+    margin: 10px;
+    padding: 15px;
+    max-width:80%;
+    min-width:20%;
+    background-color: #ffff;
+    border-radius: 0px 10px 10px 10px;
+    left: 0;
+}

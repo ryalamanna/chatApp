@@ -1,0 +1,12 @@
+.login-main-container{
+    max-height: 89%;
+    min-height: 89%;
+    width: 100%;
+    border-radius: 25px;
+    background-color: #dfdfdf;
+    overflow: scroll;
+    padding-top:20%;
+    box-shadow: 0px 10px 35px -15px rgba(0,0,0,0.75);
+    clip-path: inset(20px 0px -100px 0px);
+    z-index:0;
+}

@@ -1,0 +1,8 @@
+.main-container{
+  background-color: darkslategray;
+  height:90vh;
+  position: relative;
+  width: 23vw;
+  border-radius: 20px;
+  box-shadow: 0 0 60px -20px;
+}

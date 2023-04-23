@@ -1,0 +1,39 @@
+.floating-menu{
+    height: 45px;
+    width: 45px;
+    position: absolute;
+    bottom: 14%;
+    right: 6%;
+    font-size: 26px;
+    background-color: darkslategray;
+    color: #fff;
+    border-radius:10px;
+    border-bottom-right-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom:6px;
+    cursor:pointer;
+    z-index: 3;
+    animation: floating 1.5s ;
+    animation-fill-mode: forwards;
+    transition:  .2s;
+    box-shadow: -2px 5px 15px -1px rgba(0, 0, 0, 0.4);
+}
+
+.floating-menu:hover{
+    transform: scale(1.1);
+}
+
+@keyframes floating {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.floating-menu span{
+    /* transition: .3s; */
+}
