@@ -10,7 +10,6 @@ import { debounce } from 'lodash';
 const Chat = () => {
 
 
-
     const chatWindowRef = useRef(null);
 
     function scrollToBottom() {
@@ -19,20 +18,22 @@ const Chat = () => {
     }
 
 
-
-    useEffect(() => {
-        const getMessages = async ()=>{
-            try{
-                const res = await axios.get(`http://localhost:3000/messages/${userToken.value.user_id}/${partnerId.value}`)
-                if(chatMessages.value !== res.data){
-                    chatMessages.value = res.data;
-                }
-            }catch(err){
-                console.log(err);
-            }finally{
-                scrollToBottom();
+    const getMessages = async ()=>{
+      try{
+          const res = await axios.get(`http://localhost:3000/messages/${userToken.value.user_id}/${partnerId.value}`)
+          if(chatMessages.value !== res.data){
+            if(res.data.message !== "No messages"){
+              chatMessages.value = res.data;
             }
-        }
+          }
+      }catch(err){
+          console.log(err);
+      }finally{
+          scrollToBottom();
+      }
+  }
+    useEffect(() => {
+   
       getMessages();
     }, [])
 
@@ -51,7 +52,7 @@ const Chat = () => {
         const res = await axios.get(
           `http://localhost:3000/messages/updateChat/${userToken.value.user_id}/${partnerId.value}/${last_displayed_timestamp}`
         );
-        if (res.data.message !== "No messages") {
+        if (res.data.message !== "No messages" && res.data.length > 0) {
           chatMessages.value = [...chatMessages.value, ...res.data];
           last_displayed_timestamp.value = res.data[res.data.length - 1].created_on;
         } else {
@@ -73,7 +74,7 @@ const Chat = () => {
     
   return (
     <div className='chat-main-container' ref={chatWindowRef}>
-    {
+    {   chatMessages.value != [] && 
         chatMessages.value.map((o , key)=>{
             last_displayed_timestamp.value = o.created_on;
             return <SingleChat key={key}  from={o.sender_id === userToken.value.user_id ? 'Me' : 'Other'} message={o.content}/>

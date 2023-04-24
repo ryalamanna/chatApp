@@ -16,7 +16,7 @@ mesasgesRouter.get('/:user_id/:partner_id' , (req , res)=>{
         }else{
             if(result.length<=0){
                 res.send({
-                    message: 'No messages'
+                    message: "No messages"
                 })
             }else{
                 res.json(result)
