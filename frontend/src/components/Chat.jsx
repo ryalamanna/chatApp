@@ -33,7 +33,6 @@ const Chat = () => {
       }
   }
     useEffect(() => {
-   
       getMessages();
     }, [])
 
@@ -84,4 +83,4 @@ const Chat = () => {
   )
 }
 
-export default Chat
+export default Chat;

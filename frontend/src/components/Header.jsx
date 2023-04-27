@@ -3,6 +3,8 @@ import './Header.css';
 import meimg from '../assets/me.png'
 import { isLogedin } from '../signals/loginMessages';
 import { isChatOpen , partnerName} from '../signals/chatRelated';
+import {renderConv} from '../signals/chatRelated'
+
 const Header = () => {
   
     
@@ -10,7 +12,7 @@ const Header = () => {
     <div className='header-main-container'>
         {isChatOpen.value && 
         <>
-        <div className='back-btn' onClick={()=>{isChatOpen.value = false;}}>
+        <div className='back-btn' onClick={()=>{isChatOpen.value = false; renderConv.value = renderConv.value +1; }}>
           &#8592;
         </div>
         <div className='dp-container '>

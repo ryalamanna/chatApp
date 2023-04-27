@@ -13,7 +13,7 @@ const userData = signal({
 });
 const Footer = () => {
     const [input, setinput] = useState('');
-    const [writing, setWriting] = useState('username');
+    const [writing, setWriting] = useState('option');
 
     const CheckLogin = async () => {
         const res = await axios.post(
@@ -31,6 +31,69 @@ const Footer = () => {
         }
     };
 
+    const handleRegister = async () => {
+        console.log(userData.value);
+        const res = await axios.post(
+            'http://localhost:3000/users/register',
+            userData.value
+        );
+        console.log('called');
+        if(res.data.message === 'User registered'){
+            console.log(res.data.message);
+                message.value = [
+                    ...message.value,
+                    {
+                        message: 'Registration successfull',
+                        from: 'Other',
+                    },
+                ];
+                isLogedin.value = true;
+                userToken.value = res.data.userToken;
+        }else{
+            console.log('not registered');
+        }
+    }
+
+    const CheckName = async () => {
+        const res = await axios.get(`http://localhost:3000/users/usernamecheck/${input}`);
+        if(res.data.message === 'Username available'){
+            message.value = [
+                ...message.value,
+                {
+                    message: input,
+                    from: 'Me',
+                },
+            ];
+            userData.value = {
+                username: input,
+                password: '',
+            };
+            setWriting('rPassword');
+            message.value = [
+                ...message.value,
+                {
+                    message: 'Enter Password',
+                    from: 'Other',
+                },
+            ];
+        }else{
+            message.value = [
+                ...message.value,
+                {
+                    message: input,
+                    from: 'Me',
+                },
+            ];
+            message.value = [
+                ...message.value,
+                {
+                    message: 'Username already taken',
+                    from: 'Other',
+                },
+            ];
+        }
+    }
+
     const sendMessage = async () => {
         const res = await axios.post(
             `http://localhost:3000/messages/${userToken.value.user_id}/${partnerId.value}`,
@@ -44,10 +107,68 @@ const Footer = () => {
     };
 
     const handleMessageSend = () => {
+
         setinput('');
         document.querySelector('.message-input').focus();
         if (!isChatOpen.value) {
-            if (writing === 'username') {
+
+            if(writing === 'option'){
+                if(input === 'R' || input === 'r'){
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: input,
+                            from: 'Me',
+                        },
+                    ];
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: 'Enter a username',
+                            from: 'Other',
+                        },
+                    ];
+                    setWriting('rUsername');
+                }else if(input ==='L' || input === 'l'){
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: input,
+                            from: 'Me',
+                        },
+                    ];
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: 'Enter a username',
+                            from: 'Other',
+                        },
+                    ];
+                    setWriting('username');
+
+                }else{
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: 'Enter a valid option',
+                            from: 'Other',
+                        },
+                    ];
+                    setWriting('option');
+                }
+            }else if(writing === 'rUsername'){
+                if (input === '') {
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: 'Enter a valid username',
+                            from: 'Other',
+                        },
+                    ];
+                } else {
+                     CheckName();
+                }
+            }else if (writing === 'username') {
                 if (input === '') {
                     message.value = [
                         ...message.value,
@@ -77,7 +198,61 @@ const Footer = () => {
                         },
                     ];
                 }
-            } else {
+            } else if(writing === 'rPassword'){
+                if(input === ''){
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: 'Enter a valid password',
+                            from: 'Other',
+                        },
+                    ];
+                }else{
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: input,
+                            from: 'Me',
+                        },
+                    ];
+                    userData.value = {
+                        ...userData.value,
+                        password: input,
+                    };
+                    setWriting('rConfirmPassword');
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: 'Confirm Password',
+                            from: 'Other',
+                        },
+                    ];
+                }
+            }else if(writing === 'rConfirmPassword'){
+                if(input === userData.value.password){
+                    message.value = [
+                        ...message.value,
+                        {
+                            message: input,
+                            from: 'Me',
+                        },
+                    ];
+                    userData.value = {
+                        ...userData.value,
+                        password: input,
+                    };
+                    handleRegister();
+                }else{
+                    message.value = [
+                        ...message.value,
+                        {   
+                            message: 'Passwords do not match',
+                            from: 'Other',
+                        },
+                    ];
+                    setWriting('rPassword');
+                }
+            }else if(writing === 'password') {
                 message.value = [
                     ...message.value,
                     {
@@ -124,7 +299,7 @@ const Footer = () => {
                             handleMessageSend();
                         }}
                     >
-                        Send
+                        send
                     </button>
                 </div>
             </div>
